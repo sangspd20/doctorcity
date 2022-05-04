@@ -1,0 +1,50 @@
+<div class="container-search">
+  <div class="option-filter">
+    <div class="p-field-checkbox">
+      <p-checkbox name="group1" value="hoanThanh" [(ngModel)]="optionsFilter" inputId="la"></p-checkbox>
+      <span class='dot-status-filter green' pTooltip="Hoàn thành" tooltipPosition="bottom"></span>
+    </div>
+    <div class="p-field-checkbox">
+      <p-checkbox name="group1" value="thanhToan" [(ngModel)]="optionsFilter" inputId="sf"></p-checkbox>
+      <span class='dot-status-filter yellow' pTooltip="Đã thanh toán" tooltipPosition="bottom"></span>
+    </div>
+    <div class="p-field-checkbox">
+      <p-checkbox name="group1" value="thuPhi" [(ngModel)]="optionsFilter" inputId="ch"></p-checkbox>
+      <span class='dot-status-filter purple' pTooltip="Đã thu phí" tooltipPosition="bottom"></span>
+    </div>
+  </div>
+</div>
+<div class="p-inputgroup">
+  <input type="text" [(ngModel)]="keywordFilter" pInputText placeholder="Tên/Số điện thoại" />
+  <button type="button" pButton pRipple class="p-button-primary" icon="pi pi-search" (click)="handleSearch()">
+  </button>
+  <button type="button" pButton pRipple class="p-button-secondary" icon="pi pi-refresh" (click)="handleResetSearch()">
+  </button>
+</div>
+
+<div class="container-ds-phien-kham">
+  <div class="center" *ngIf="loading">
+    <div class="loader"></div>
+  </div>
+  <table class="table table-bordered container table-sm" mat-table>
+    <tbody>
+      <tr *ngFor="let ncc of dsNhaCungCap; let i = index"
+        class="data-row {{ NhaCungCapId === ncc.id ? 'active' : '' }}">
+        <td style="cursor: pointer;" (click)="emitNhaCungCap(ncc)">
+          <span>
+            <b>
+              {{ncc?.tenNhaCungCap}}
+            </b>
+          </span>
+          <br>
+          <span>{{ncc?.phoneNumber}}</span>
+          <span class="container-status">
+            <span *ngIf="ncc?._filterHoanThanh" class='dot-status green'></span>
+            <span *ngIf="ncc?._filterThanhToan" class='dot-status yellow'></span>
+            <span *ngIf="ncc?._filterThuPhi" class='dot-status purple'></span>
+        </span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

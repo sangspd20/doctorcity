@@ -1,0 +1,58 @@
+<nav ngbNav [(activeId)]="activeID"  class="navbar navbar-expand-lg navbar-dark bg-warning">
+  <a class="navbar-brand" href="#">Doctorcity</a>
+  
+  <button class="navbar-toggler" type="button" (click)="isCollapsed = !isCollapsed" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  
+  <div class="collapse navbar-collapse" id="navbarColor02" [ngbCollapse]="isCollapsed">
+    <ul class="navbar-nav mr-auto">
+      <!--
+      <li [ngbNavItem]="2" class="nav-item">
+        <a *ngIf="authSv.claims && authSv.claims.r.includes(4)" class="nav-link" [routerLink]="['quan-ly-nguoi-dung']">Quản lý người dùng</a>
+      </li>
+      -->
+      <!--
+      <li [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " [routerLink]="['tai-khoan-cua-toi']" >{{this.authSv.user?.email}}</a>
+      </li>
+      -->
+
+      <li *ngIf="listItemMenu.hoTroChuyenMon" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " [routerLink]="['quan-ly-phien-kham']" >QUẢN LÝ PHIÊN KHÁM</a>
+      </li>
+      <li *ngIf="listItemMenu.duLieuTrieuChung" [ngbNavItem]="1" class="nav-item" >
+        <a class="nav-link " >QUẢN LÝ TRIỆU CHỨNG</a>
+      </li>
+      <li *ngIf="listItemMenu.duLieuChanDoan" [ngbNavItem]="1" class="nav-item" >
+        <a class="nav-link " >QUẢN LÝ CHẨN ĐOÁN</a>
+      </li>
+      <li *ngIf="listItemMenu.duLieuThuoc" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " >QUẢN LÝ THUỐC</a>
+      </li>
+      <li *ngIf="listItemMenu.duLieuDichVuChuyenMon" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " >DỊCH VỤ CHUYÊN MÔN</a>
+      </li>
+      <li *ngIf="listItemMenu.quanLyNguoiDung" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " >QUẢN LÝ NGƯỜI DÙNG</a>
+      </li>
+      <li *ngIf="listItemMenu.dongGoiDichVu" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " >DỊCH VỤ</a>
+      </li>
+      <li *ngIf="listItemMenu.quanLyYeuCauDichVu" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link" [routerLink]="'quan-ly-thanh-toan'">QUẢN LÝ THANH TOÁN</a>
+      </li>
+      <li *ngIf="listItemMenu.quanLyTrungTamChuyenMon" [ngbNavItem]="1" class="nav-item">
+        <a class="nav-link " >TRUNG TÂM CHUYÊN MÔN</a>
+      </li>
+      <li [ngbNavItem]="1" class="nav-item" style="font-style: italic;">
+        <a class="nav-link ">...</a>
+      </li>
+    </ul>
+    <button class="btn btn-outline-light my-2 my-sm-0" (click)="authSv.signOut()">{{userMail}}&#10162;</button>
+  </div>
+</nav>
+
+
+<!-- and an actual outlet elsewhere -->
+<router-outlet></router-outlet>

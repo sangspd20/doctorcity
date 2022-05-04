@@ -1,0 +1,13 @@
+<!-- <th scope="row">{{index+1}}</th> -->
+
+<td>{{(tt_trieu_chung_OBS2|async)?.maIcd}}. {{(tt_trieu_chung_OBS2|async)?.tenChanDoan}}</td>
+
+<td>
+    <button *ngIf="!locked" class="btn btn-outline-danger"
+    (click)="xoacd(index2)"
+    style="cursor: pointer;">x<i class="fa fa-trash"></i></button>
+</td>
+
+
+
+<!-- <p>quan-ly-chan-doan works!</p> -->

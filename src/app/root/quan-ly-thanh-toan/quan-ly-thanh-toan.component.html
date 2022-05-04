@@ -1,0 +1,327 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-3">
+            <app-danh-sach-nha-cung-cap #cmpDanhSachNhaCungCap [year]="yearFilter" [month]="monthFilter" (emitterRequest)="handlderRequest($event)" (emitterNhaCungCap)="handlerNhaCungCap($event)">
+            </app-danh-sach-nha-cung-cap>
+            <ngb-accordion *ngIf="nhaCungCapSelected" #acc="ngbAccordion" activeIds="ngb-panel-0">
+                <ngb-panel title="Thông tin nhà cung cấp">
+                    <ng-template ngbPanelContent>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>Ngày sinh:</td>
+                                    <td>{{ nhaCungCapSelected?.ngaySinh | date: "dd/MM/yyyy"}}</td>
+                                </tr>
+                                <tr>
+                                    <td>Căn cước:</td>
+                                    <td>{{ nhaCungCapSelected?.canCuoc }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Tài khoản:</td>
+                                    <td>{{ nhaCungCapSelected?.taiKhoan }}</td>
+                                </tr>
+                                <tr>
+                                    <td>Ngân hàng:</td>
+                                    <td>{{ nhaCungCapSelected?.nganHang }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Các báo cáo">
+                    <ng-template ngbPanelContent>
+                        <tr>
+                            <td>
+                                <a href="javascript:;" (click)="baoCaoTaiChinhThangTong()">Báo cáo tài chính tháng</a>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>...</td>
+                        </tr>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+
+        <div *ngIf="nhaCungCapSelected" class="col-lg-9">
+            <td> Năm:
+                <p-dropdown (ngModelChange)="onYearFilter($event)" [options]="yearsFilter" [(ngModel)]="yearFilter" placeholder="Năm" optionLabel="label" optionValue="value" [showClear]="true"></p-dropdown>
+            </td>
+            <td>&nbsp; <button (click)="onBackWard()" class="btn btn-outline-primary">&#10094;</button></td>
+            <td> &nbsp; Tháng: {{ monthFilter }} &nbsp;</td>
+            <td><button (click)="onForWard()" class="btn btn-outline-primary">&#10095;</button></td>
+            <td> &nbsp; Tổng tiền phí:
+                <span style="color:red; font-weight: bold;font-size: 25px">{{ tongTienPhiThang | number: '2.' }}</span>
+            </td>
+            <td> &nbsp; &nbsp;
+                <button (click)="onhoanTatThanhToan()" *ngIf="!hoanTatThanhToan && Request && Request.length > 0" class="btn btn-outline-danger">Hoàn tất thu phí</button>
+            </td>
+
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>Dịch vụ</a>
+                    <ng-template ngbNavContent>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Yêu cầu</th>
+                                    <th scope="col">Thời điểm</th>
+                                    <th scope="col">Phiên khám</th>
+                                    <th scope="col">Khách hàng</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col" class="text-center">Tiền phí</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let req of Request">
+                                    <td>{{req.maDichVu}} - {{req.tenDichVu}} - {{req.price | number: '2.'}}</td>
+                                    <td>{{ req?.thoiDiemTao | date: "dd/MM/yy hh:mm a" }}</td>
+                                    <td><span *ngIf="req?.maPhienKham">{{ req?.maPhienKham }}</span></td>
+                                    <td>
+                                        <a href="javascript:;" (click)="hienThiKhachHang(req)">{{ req?.displayName }}</a>
+                                    </td>
+                                    <td>
+                                        <span *ngIf="req.yeuCauHoTro" class='dot-status red'></span> {{req.trangThaiXuLy}}
+                                        <span *ngIf="req.thanhToan" class='dot-status yellow'></span>
+                                    </td>
+                                    <td class="text-center">
+                                        <span *ngIf="req.thanhToan">
+                      <!-- {{ req.price | number:'2.' }} -->
+                      <ng-container *ngIf="req.tongPhi">
+                        {{ req.tongPhi | number:'2.' }}
+                      </ng-container>
+                    </span>
+                                        <button *ngIf="!req.thanhToan" (click)="thuHoTienDichVu(req)" class="btn btn-outline-info">
+                      <i class="pi pi-money-bill"></i>
+                    </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink (click)="baoCaoTaiChinhThang()">Báo cáo tài chính tháng</a>
+                    <ng-template ngbNavContent>
+                        <table class="table table-sm">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Dịch vụ</th>
+                                    <th class="text-center" scope="col">Số lượng</th>
+                                    <th scope="col">Tổng phí</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <ng-container *ngFor="let dv of baoCaoTaiChinhThangData">
+                                    <tr style="background-color: #e7e7e7;">
+                                        <td>
+                                            &nbsp;&nbsp;<b><i>{{ dv.maDichVu }} - {{ dv.tenDichVu }}</i></b>
+                                        </td>
+                                        <td class="text-center">
+                                            <b> {{ dv.count }}</b>
+                                        </td>
+                                        <td>
+                                            <b>{{ dv.tongPhi | number : '2.' }}</b>
+                                        </td>
+                                    </tr>
+                                    <tr *ngFor="let g of dv.data">
+                                        <td>
+                                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ g.title }}
+                                        </td>
+                                        <td class="text-center">
+                                            {{ g.count }}
+                                        </td>
+                                        <td>{{ g.tongPhi | number : '2.' }}</td>
+                                    </tr>
+                                </ng-container>
+                                <tr *ngIf="Request && Request.length > 0">
+                                    <td>
+                                        <b>Tổng tiền phí (Tổng phí dịch vụ + Tổng phí hệ thống) =
+                      {{ (tongTienPhiThang - chiPhiHeThong) | number :'2.' }} + {{ chiPhiHeThong | number : '2.' }}
+                    </b>
+                                    </td>
+                                    <td class="text-center">
+                                        <b>{{ baoCaoTaiChinhThangCount }}</b>
+                                    </td>
+                                    <td>
+                                        <b>{{ tongTienPhiThang | number :'2.' }}</b>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Modal thông tin khách hàng kèm kiến nghị -->
+<p-dialog #dlgKhachHang appendTo="body" [(visible)]="dlgKhachHangHienThi" [modal]="true" [style]="{width: '60vw'}" [baseZIndex]="10000" [draggable]="false" [dismissableMask]="true" [resizable]="false">
+    <p-header>
+        <h4> <i class="pi pi-calendar"></i> Thông tin khách hàng</h4>
+    </p-header>
+    <div class="container">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-5 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <!-- data:image/png;base64,{{ nhaCungCapModel?.avatar }} -->
+                                <ng-container *ngIf="khachHangModel?.avatarBase64!; else noAvatar">
+                                    <img src="data:image/png;base64,{{ khachHangModel?.avatarBase64 }}" [alt]="khachHangModel?.displayName" class="rounded-circle" width="150">
+                                </ng-container>
+                                <ng-template #noAvatar>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                </ng-template>
+                                <div class="mt-3">
+                                    <hr>
+                                    <h5>{{ khachHangModel?.displayName }}</h5>
+                                    <h6> ☏: {{ khachHangModel?.phoneNumber }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">
+                                        <i class="pi pi-info-circle"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-sm-10 text-secondary">
+                                    <span title="Dịch vụ">{{ khachHangModel?.title|| '' }}</span>
+                                </div>
+                            </div>
+                            <hr />
+                            <!--
+              <div class="row">
+                <div class="col-sm-2">
+                  <h6 class="mb-0">
+                    <i class="pi pi-file-o"></i> (R1)
+                  </h6>
+                </div>
+                <div class="col-sm-10 text-secondary">
+                  <span title="Đánh giá trung tâm">{{ khachHangModel?.danhGia1 || '' }}</span>
+                </div>
+              </div>
+              <hr />
+              <div class="row">
+                <div class="col-sm-2">
+                  <h6 class="mb-0">
+                    <i class="pi pi-file-o"></i> (R2)
+                  </h6>
+                </div>
+                <div class="col-sm-10 text-secondary">
+                  <span title="Đánh giá trung tâm">{{ khachHangModel?.danhGia2 || '' }}</span>
+                </div>
+              </div>
+              -->
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-2">
+                                    <h6 class="mb-0">
+                                        <i class="pi pi-file-o"></i> (R3)
+                                    </h6>
+                                </div>
+                                <div class="col-sm-10 text-secondary">
+                                    <span title="Đánh giá tổng hợp">{{ khachHangModel?.danhGia3 || ''}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <!-- <div class="col-sm-2">
+                  <h6 class="mb-0"><i class="pi pi-envelope"></i></h6>
+                </div> -->
+                                <div class="col-sm-12 text-secondary">
+                                    <textarea [(ngModel)]="khachHangModel.kienNghi" placeholder="Kiến nghị xử lý" class="form-control" rows="4"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button (click)="capNhatKienNghi()" pButton pRipple type="button" icon="pi pi-check" label="Lưu kiến nghị"></button>
+    </ng-template>
+</p-dialog>
+
+
+<!-- Modal báo cáo tài chính các nhà cung cấp -->
+<p-dialog appendTo="body" [(visible)]="dlgBaoCao" [modal]="true" [style]="{width: '70vw'}" [baseZIndex]="10000" [draggable]="false" [dismissableMask]="true" [resizable]="false">
+    <p-header>
+        <h4> Báo cáo tài chính tháng {{ monthFilter }} năm {{ yearFilter }}</h4>
+    </p-header>
+    <div class="container">
+        <div class="center" *ngIf="loading">
+            <div class="loader"></div>
+        </div>
+        <div *ngIf="!loading" class="main-body">
+            <table class="table table-sm">
+                <thead>
+                    <tr>
+                        <th scope="col">Dịch vụ</th>
+                        <th class="text-center" scope="col">Số lượng</th>
+                        <th scope="col">Tổng phí</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <ng-container *ngFor="let dv of baoCaoTaiChinhThangTongData">
+                        <tr style="background-color: #e7e7e7;">
+                            <td>
+                                &nbsp;&nbsp;<b><i>{{ dv.maDichVu }} - {{ dv.tenDichVu }}</i></b>
+                            </td>
+                            <td class="text-center">
+                                <b> {{ dv.count }}</b>
+                            </td>
+                            <td>
+                                <b>{{ dv.tongPhi | number : '2.' }}</b>
+                            </td>
+                        </tr>
+                        <tr *ngFor="let g of dv.data">
+                            <td>
+                                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; {{ g.title }}
+                            </td>
+                            <td class="text-center">
+                                {{ g.count }}
+                            </td>
+                            <td>{{ g.tongPhi | number : '2.' }}</td>
+                        </tr>
+                    </ng-container>
+                    <tr style="background-color: #e7e7e7;">
+                        <td>
+                            <b>Nhà cung cấp</b>
+                        </td>
+                        <td class="text-center">
+                            <b>{{ BaoCaoSoNcc }}</b>
+                        </td>
+                        <td>
+                            <b>{{ chiPhiHeThongTong | number :'2.' }}</b>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            <b>Tổng số (Tổng tiền phí tháng + Tổng chi phí hệ thống) = {{ tongTienTatCaNcc | number :'2.' }} + {{ chiPhiHeThongTong | number :'2.' }}</b>
+                        </td>
+                        <td class="text-center">
+                            <b>{{ baoCaoTaiChinhThangCount }}</b>
+                        </td>
+                        <td>
+                            <b>{{ (tongTienTatCaNcc + chiPhiHeThongTong) | number :'2.' }}</b>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+    </ng-template>
+</p-dialog>

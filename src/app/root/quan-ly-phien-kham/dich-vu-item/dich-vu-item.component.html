@@ -1,0 +1,26 @@
+<td>{{(dich_vu_OBS | async)?.tenDichVu}} - {{(dich_vu_OBS | async)?.price | number: '2.'}}</td>
+
+<td>
+    <span *ngIf="dich_vu?.yeuCauHoTro" class='dot-status red'></span> {{dich_vu?.trangThaiXuLy}}
+    <span *ngIf="dich_vu?.thanhToan" class='dot-status yellow'></span>
+</td>
+<td>
+  <small><a (click)="onReviewModal()" title="Đánh giá nhà cung cấp" href="javascript:;">{{(nha_cung_cap_OBS | async)?.nhaCungCap?.tenNhaCungCap}}</a></small>
+</td>
+<!--vu-lh thay đổi hiển thị thời gian xác nhận gặp mặt dịch vụ-->
+<!-- <td>{{dich_vu?.thoiDiemTao | date: "dd/MM/yy hh:mm a"}}</td> -->
+<td><small>{{dich_vu?.thoiDiemXacNhanGap | date: "dd/MM/yy hh:mm a"}}</small></td>
+<!--vu-lh thay đổi hiển thị thời gian kết thúc dịch vụ-->
+<!-- <td>{{dich_vu?.thoiDiemHoanThanh | date: "dd/MM/yy hh:mm a"}}</td> -->
+<td><small>{{dich_vu?.tongThoiGianXuLy}}</small></td>
+<td style="text-align: center;">
+    <!-- <a [href]="dich_vu?.baoCao" target="_blank"> -->
+    <a (click)="onReviewModalReport()" href="javascript:;">
+        <i class="pi pi-file-pdf"></i>
+    </a>
+</td>
+<!--
+<td>
+  <button *ngIf="!locked" class="btn btn-outline-danger" (click)="xoa(index)">x</button>
+</td>
+-->

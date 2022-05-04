@@ -1,0 +1,378 @@
+<div class="container-fluid mt-4">
+    <div class="row">
+        <div class="col-lg-2">
+            <app-danh-sach-phien-kham #cmpDanhSachPhienKham (chon_phien_kham)="chon_phien_kham_moi($event)">
+            </app-danh-sach-phien-kham>
+            <ngb-accordion *ngIf="phienKhamSelected" #acc="ngbAccordion" activeIds="ngb-panel-0">
+                <ngb-panel title="Thông tin khách hàng">
+                    <ng-template ngbPanelContent>
+                        <div>
+                            <table>
+                                <tr>
+                                    <td>&#9825;:</td>
+                                    <td>{{ (khach_hang_OBS | async)?.ngaySinh | date: "dd/MM/yyyy"}}</td>
+                                </tr>
+                                <tr>
+                                    <td>&#9893;:</td>
+                                    <td>{{ (khach_hang_OBS | async)?.sex }}</td>
+                                </tr>
+                                <tr>
+                                    <td>&#9743;:</td>
+                                    <td>{{ (khach_hang_OBS | async)?.phoneNumber }}</td>
+                                </tr>
+                                <tr>
+                                    <td>&#9745;:</td>
+                                    <td>{{ selectedHopDong }}</td>
+                                </tr>
+                            </table>
+                        </div>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Chat">
+                    <ng-template ngbPanelContent>
+                        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod.
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+        <div *ngIf="phienKhamSelected" class="col-lg-5">
+            <td><button (click)="onBackWard()" class="btn btn-outline-primary">&#10094;</button></td>
+            <td> &nbsp; ID: {{ (phien_kham_OBS | async)?.maPhienKham }} &nbsp;</td>
+            <td>
+                <h5>{{ (khach_hang_OBS | async)?.displayName }} &nbsp; </h5>
+            </td>
+            <td><button (click)="onForWard()" class="btn btn-outline-primary">&#10095;</button></td>
+
+            <ul ngbNav #nav="ngbNav" [(activeId)]="active" class="nav-tabs">
+                <li [ngbNavItem]="1">
+                    <a ngbNavLink>Diễn biến</a>
+                    <ng-template ngbNavContent>
+                        <br>
+                        <td style="display: flex;justify-content: space-between;">
+                            <div class="row form-group" style="display: flex;flex: 1;">
+                                <div class="col-6" style="display: flex;align-items: center;text-align: center;">
+                                    <h6 style="display: flex;align-items: center;margin-bottom: 0;width: 200px;">Tiền sử:</h6>
+                                </div>
+                                <div *ngIf="!checkPhienKhamKetThuc" class="col-6" style="display: flex;justify-content: flex-end;">
+                                    <button type="button" class="btn btn-outline-primary" icon="pi pi-save" (click)="suaTienSuBenh()">lưu</button>
+                                </div>
+                            </div>
+                        </td>
+                        <div>
+                            <textarea class="form-control" [(ngModel)]="tienSuBenh" rows="4" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC"></textarea>
+                        </div>
+                        <br>
+                        <td style="display: flex;justify-content: space-between;">
+                            <div class="row form-group" style="display: flex;flex: 1;">
+                                <div class="col-6" style="display: flex;align-items: center;text-align: center;">
+                                    <h6 style="display: flex;align-items: center;margin-bottom: 0;width: 200px;">Diễn biến:</h6>
+                                </div>
+                                <div *ngIf="!checkPhienKhamKetThuc" class="col-6" style="display: flex;justify-content: flex-end;">
+                                    <button type="button" class="btn btn-outline-primary" icon="pi pi-save" (click)="suaDienBienSucKhoe()">lưu</button>
+                                </div>
+                            </div>
+                        </td>
+                        <div>
+                            <textarea class="form-control" [(ngModel)]="dienBienSucKhoe" rows="4" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC"></textarea>
+                        </div>
+                        <br>
+
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="2">
+                    <a ngbNavLink>Triệu chứng</a>
+                    <ng-template ngbNavContent>
+                        <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                            <input id="typeahead-tim-trieu-chung" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [ngbTypeahead]="search" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]="false" (selectItem)="them_trieu_chung($event.item.id)"/>
+                        </div>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr app-trieu-chung-item *ngFor="
+                                    let trieu_chung1 of (phien_kham_OBS | async)
+                                    ?.ds_trieu_chung;
+                                    let i = index
+                                    " [index]="i" [trieu_chung]="trieu_chung1" [locked]="checkPhienKhamKetThuc" (xoa_trieu_chung)="xoa_trieu_chung($event)">
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+                <li [ngbNavItem]="3">
+                    <a ngbNavLink>Thăm dò chức năng</a>
+                    <ng-template ngbNavContent>
+                        <div class="row">
+                            <div class="col">
+                                <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon2">+</span>
+                                    </div>
+                                    <input id="typeahead-tim-chan-doan" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="query_canlamsang" [ngbTypeahead]="searchCanLamSang" [inputFormatter]="formatter3" [resultFormatter]="formatter3" [editable]="false" (selectItem)="themCanLamSang($event.item.id)" />
+                                </div>
+                            </div>
+                            <div class="col">
+                                <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                                    <div class="input-group-prepend">
+                                        <span class="input-group-text" id="basic-addon2">++</span>
+                                    </div>
+                                    <input id="typeahead-tim-nhom" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="query_nhomcanlamsang" [ngbTypeahead]="searchNhomCanLamSang" [inputFormatter]="formatter4" [resultFormatter]="formatter4" [editable]="false" (selectItem)="themNhomCanLamSang($event.item.value)" />
+                                </div>
+                            </div>       
+                        </div>
+                        <table class="table table-sm">
+                            <tbody>
+                                <div class="center" *ngIf="loading">
+                                    <div class="loader"></div>
+                                </div>
+                                <ng-container *ngIf="!loading">
+                                    <tr app-can-lam-sang *ngFor="let dvcls of dvpk_canlamsang; let i = index" [dvCanLamSang]="dvcls" [index]="dvcls.index" (xoa_cls)="xoa_cls($event)" [locked]="checkPhienKhamKetThuc">
+                                    </tr>
+                                </ng-container>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </li>
+                <!--
+                <li [ngbNavItem]="4">
+                    <a ngbNavLink>Y lệnh</a>
+                    <ng-template ngbNavContent>
+                    </ng-template>
+                </li>
+                
+                <li [ngbNavItem]="5">
+                    <a ngbNavLink>Dịch vụ</a>
+                    <ng-template ngbNavContent>    
+                    </ng-template>
+                </li>
+                
+                <li [ngbNavItem]="6">
+                    <a ngbNavLink>...</a>
+                    <ng-template ngbNavContent>
+                </li>
+                
+                <li [ngbNavItem]="7">
+                    <a ngbNavLink>Đơn thuốc</a>
+                    <ng-template ngbNavContent>
+                    </ng-template>
+                </li>
+                -->
+            </ul>
+            <div [ngbNavOutlet]="nav" class="mt-2"></div>
+        </div>
+        <div *ngIf="phienKhamSelected" class="col-lg-5">
+            <td *ngIf="!checkPhienKhamKetThuc">
+                <p-dropdown [options]="ds_coSoYTe" [(ngModel)]="selectedTrungTamCoSo" placeholder="Chuyển trung tâm" optionLabel="tenThongDung" optionValue="maCoSo" [showClear]="true" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC"></p-dropdown><button pButton type="button" label="&#10148;" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" (click)="doiTrungTamHoTroCuaPhienKham()"></button>
+            </td>
+            <td *ngIf="isDoctorcity && ketThucKhamEnabled && phienKhamSelected.ketThuc != '1'"> &nbsp; &nbsp;
+                <button class="btn btn-outline-danger" (click)="ketThucPhienKham()">Kết thúc phiên khám</button>
+            </td>
+            <ngb-accordion *ngIf="phienKhamSelected" #acc="ngbAccordion" activeIds="ngb-panel-0">
+                <ngb-panel title="Y lệnh">
+                    <ng-template ngbPanelContent>
+                        <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                            <input id="typeahead-tim-trieu-chung" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="themYLenh" (keyup.enter)="them_y_lenh()" />
+                        </div>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr app-xu-ly-item *ngFor="let xu_tri of (phien_kham_OBS | async)?.ds_xu_tri; let i = index  " [index]="i" [xu_tri]="xu_tri"></tr>
+                            </tbody>
+                        </table>   
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Dịch vụ">
+                    <ng-template ngbPanelContent>
+                        <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                            <input id="typeahead-tim-trieu-chung" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="query_tim_dich_vu" [ngbTypeahead]="search_service" [inputFormatter]="formatter_service" [resultFormatter]="formatter_service" [editable]="false" (selectItem)="them_dich_vu($event.item.id)"/>
+                        </div>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr app-dich-vu-item *ngFor="let dich_vu of dsyeucau; let i = index " [index]="i" [dich_vu]="dich_vu" [locked]="checkPhienKhamKetThuc" (xoa_dich_vu)="xoa_dich_vu($event)" (danhGiaNcc)="onReviewVendor($event)" (baoCao)="onReviewReport()"></tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Chẩn đoán">
+                    <ng-template ngbPanelContent>
+                        <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-3">
+                            <input id="typeahead-tim-chan-doan" type="text" class="form-control" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="query_tim_chan_doan" [ngbTypeahead]="search1" [inputFormatter]="formatter1" [resultFormatter]="formatter1" [editable]="false" (selectItem)="them_chan_doan($event.item.id)"/>
+                        </div>
+                        <table class="table table-sm">
+                            <tbody>
+                                <tr app-quan-ly-chan-doan *ngFor="let icd3 of (phien_kham_OBS | async)?.ds_chan_doan;  let i1 = index" [index2]="i1" [trieu_chung2]="icd3" [locked]="checkPhienKhamKetThuc" (xoachandoan)="xoachandoan($event)"></tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </ngb-panel>
+                <ngb-panel title="Đơn thuốc">
+                    <ng-template ngbPanelContent>
+                        <div *ngIf="!checkPhienKhamKetThuc" class="input-group mb-12">
+                            <table class="table table-sm">
+                                <tr>
+                                    <td width="75%">
+                                        <input id="typeahead-tim-trieu-chung1" type="text" class="form-control" style="width: 100%" placeholder="Nhập tên thuốc" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" [(ngModel)]="query_tim_don_thuoc" [ngbTypeahead]="searchdt" [inputFormatter]="formatterdt"
+                                        [resultFormatter]="formatterdt" [editable]="false" (selectItem)="them_don_thuoc($event.item.id)" />
+                                    </td>
+                                    <td >
+                                        <input type="text" class="form-control" id="isoLuong" [(ngModel)]="so_luong" placeholder="SL" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" />
+                                    </td>
+                                    <td>
+                                       {{ phuongdan.dangDongGoi }}
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td colspan="2">
+                                        <input type="text" width="100%" class="form-control" id="ihuongDan" [(ngModel)]="huongdan" placeholder="{{ phuongdan.lieuThuongDung }}" [disabled]="checkPhienKhamKetThuc || !phiem_kham_DOC" />
+                                    </td>
+                                    <td>
+                                        <button class="btn btn-outline-danger" [disabled]="!huongdan" (click)="nhapdonthuoc()">+</button>
+                                    </td>
+                                </tr>
+                            </table>
+                        </div>
+                        <table class="table table-sm">
+                            <tbody style="background-color: rgb(101, 177, 221)">
+                                <tr *ngFor="let dt of (phien_kham_OBS | async)?.donThuoc; let i1 = index">
+                                    <app-don-thuoc [trieu_chung4]="dt" [index1]="i1" [locked]="checkPhienKhamKetThuc" (xoadonthuoc)="xoadonthuoc($event)" (update_huongdan)="update_huongdan($event)">
+                                    </app-don-thuoc>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </ng-template>
+                </ngb-panel>
+            </ngb-accordion>
+        </div>
+    </div>
+</div>
+
+<!-- Modal đánh giá nhà cung cấp -->
+<p-dialog #dlgDanhGiaNcc appendTo="body" [(visible)]="danhGiaNccModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [dismissableMask]="true" [resizable]="false">
+    <p-header>
+        <h4> <i class="pi pi-calendar"></i> Đánh giá cung cấp dịch vụ</h4>
+    </p-header>
+    <div class="container">
+        <div class="main-body">
+            <div class="row gutters-sm">
+                <div class="col-md-5 mb-3">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="d-flex flex-column align-items-center text-center">
+                                <!-- data:image/png;base64,{{ nhaCungCapModel?.avatar }} -->
+                                <ng-container *ngIf="nhaCungCapModel?.avatarBase64!; else noAvatar">
+                                    <img src="data:image/png;base64,{{ nhaCungCapModel?.avatarBase64 }}" [alt]="nhaCungCapModel?.nhaCungCap?.tenNhaCungCap" class="rounded-circle" width="150">
+                                </ng-container>
+                                <ng-template #noAvatar>
+                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Admin" class="rounded-circle" width="150">
+                                </ng-template>
+                                <div class="mt-3">
+                                    <hr>
+                                    <h5>{{ nhaCungCapModel?.nhaCungCap?.tenNhaCungCap }}</h5>
+                                    <h6> ☏: {{ nhaCungCapModel?.phoneNumber }}</h6>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7">
+                    <div class="card mb-3">
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h6 class="mb-0">
+                                        <i class="pi pi-file-o"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-sm-11 text-secondary">
+                                    <span title="Dịch vụ">{{ nhaCungCapModel?.tenDichVu || '' }}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h6 class="mb-0"><i class="pi pi-bookmark"></i></h6>
+                                </div>
+                                <div class="col-sm-11 text-secondary">
+                                    <span title="Chứng chỉ hành nghề">{{nhaCungCapModel?.chungChiHanhNghe || ''}}</span>
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h6 class="mb-0">
+                                        <i class="pi pi-sitemap"></i>
+                                    </h6>
+                                </div>
+                                <div class="col-sm-11 text-secondary">
+                                    {{ nhaCungCapModel?.coSoHanhNghe || '' }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h6 class="mb-0"><i class="pi pi-map-marker"></i></h6>
+                                </div>
+                                <div class="col-sm-11 text-secondary">
+                                    {{ nhaCungCapModel?.ViTri || '' }}
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-sm-1">
+                                    <h6 class="mb-0"><i class="pi pi-sliders-h"></i></h6>
+                                </div>
+                                <div class="col-sm-11 text-secondary">
+                                    <p-dropdown [(ngModel)]="danhGiaSelected" [baseZIndex]="10000" [style]="{width: '100%'}" appendTo="body" [options]="nhaCungCapDanhGiaDropdown" optionLabel="label"></p-dropdown>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <ng-template pTemplate="footer">
+        <button (click)="onSubmitReviewVendor()" pButton pRipple type="button" icon="pi pi-check" label="Đánh giá"></button>
+    </ng-template>
+</p-dialog>
+
+<!-- Modal tài liệu phiếu kết quả-->
+<p-dialog #dlgPhieuKetQua appendTo="body" [(visible)]="baoCaoModal" [modal]="true" [style]="{width: '50vw'}" [baseZIndex]="10000" [draggable]="false" [dismissableMask]="true" [resizable]="false">
+    <p-header>
+        <h4> <i class="pi pi-calendar"></i> Danh sách phiếu kết quả</h4>
+    </p-header>
+    <div class="container">
+        <div class="main-body">
+            <table class="table container table-sm" mat-table>
+                <tbody>
+                    <tr *ngFor="let file of filelist; let i = index" class="data-row">
+                        <td style="cursor: pointer;" (click)="emitPhieuKetQua(file)">
+                            <div class="d-flex {{ (fileSelectedOther == file.downloadURL || fileSelectedImage == file.downloadURL ) ? 'activeFile' : 'inActiveFile' }}">
+                                <div class="d-flex flex-column mw-100 ">
+                                    <h6> {{file?.fileName}}</h6>
+                                </div>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div *ngIf="fileSelectedOther">
+                <div class="center" *ngIf="loading">
+                    <div class="loader"></div>
+                </div>
+                <ngx-doc-viewer [url]="fileSelectedOther" viewer="google" style="width:100%;height:50vh;"></ngx-doc-viewer>
+            </div>
+            <div *ngIf="fileSelectedImage">
+                <img src="{{fileSelectedImage}}" [alt]="" style="width:100%;height:50vh;">
+            </div>
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+        <div class="form-group row">
+            <div class="col-4">
+                <input type="file" #imageSelector id="imageSelector" name="imageSelector" (change)="selectFile($event)" class="text-center center-block file-upload">
+            </div>
+            <div class="col-8">
+                <button (click)="onCloseReviewReport()" pButton pRipple type="button" icon="pi pi-close" label="Đóng"></button>
+            </div>
+        </div>
+    </ng-template>
+</p-dialog>

@@ -1,0 +1,61 @@
+<div class="card mt-5">
+    <article class="card-body">
+        <!-- <a [routerLink]="['/dang-ky']" class="float-right btn btn-outline-info">Đăng ký</a> -->
+        <h4 class="card-title mb-4 mt-1">ĐĂNG NHẬP</h4>
+        <!-- <p>
+            <button class="btn btn-block btn-outline-danger" (click)="authSv.signInWithGoogle()"><fa-icon [icon]="icon.go"></fa-icon>  Dùng tài khoản Google</button>
+            <button class="btn btn-block btn-outline-primary" (click)="authSv.signInWithFacebook()"><fa-icon [icon]="icon.fb"></fa-icon>  Dùng tài khoản Facebook</button>
+        </p>
+        <hr> -->
+        <form #loginForm="ngForm" (submit)="authSv.signInWithEmail(email,password,isSaveCookies)">
+            <div class="form-group">
+                <input type="email" id="email" name="email" #emailInput="ngModel" [(ngModel)]="email" class="form-control" placeholder="Địa chỉ email" type="email" required email>
+                <div *ngIf="!emailInput.valid && !emailInput.pristine" class="invalid-feedback d-block">Email không đúng</div>
+            </div> <!-- form-group// -->
+            <div class="form-group">
+                <input type="password" id="password" name="password" #passwordInput="ngModel"[(ngModel)]="password" class="form-control" placeholder="Mật khẩu" type="password" required>
+                <div *ngIf="!passwordInput.valid && !passwordInput.pristine" class="invalid-feedback d-block">Mật khẩu không được để trống</div>
+            </div> <!-- form-group// -->
+            <div class="form-group"> 
+            <div class="checkbox">
+              <label> <input type="checkbox" id="isSaveCookies" name="isSaveCookies" [(ngModel)]="isSaveCookies"> Ghi nhớ đăng nhập </label>
+            </div> <!-- checkbox .// -->
+            </div> <!-- form-group// -->  
+
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary btn-block" [disabled]="!loginForm.form.valid||loginForm.form.pristine"> Đăng nhập  </button>
+                    </div> <!-- form-group// -->
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="small"  [routerLink]="['./']" (click)="mdSv.open(resetPasswordConfirmModal,{size: 'md',centered: true})">Quên mật khẩu?</a>
+                </div>                                            
+            </div> <!-- .row// -->                                                                  
+        </form>
+    </article>
+</div> <!-- card.// -->
+<ng-template #resetPasswordConfirmModal let-modal>
+    <div class="modal-header">
+        <h4 class="modal-title" id="modal-basic-title">Xác nhận tạo lại mật khẩu</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    <div class="modal-body">
+        <div class="input-group mb-2">
+            <div class="input-group-prepend">
+              <div class="input-group-text">@</div>
+            </div>
+            <input [(ngModel)]="email" type="text"class="form-control" id="inlineFormInputGroup" placeholder="Địa chỉ email cần khôi phục mật khẩu Doctorcity" ngbAutofocus>
+        </div>
+        Gửi một email chứa link đặt lại mật khẩu cho địa chỉ email trên.<br>
+        Bạn có đồng ý không?
+    </div>
+    <div class="modal-footer">
+        <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss('cancel click')">Bỏ qua</button>
+        <button type="button" class="btn btn-danger" (click)="modal.close();resetPassword()">Đồng ý</button>
+    </div>
+</ng-template>
+  
+  <!-- <button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button> -->

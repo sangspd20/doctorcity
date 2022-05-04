@@ -1,0 +1,60 @@
+<form #profileForm="ngForm" (submit)="submit(profileForm.value.docID)" class="container">
+    <div class="row">
+        <h2 *ngIf="(user$|async)?.docID">{{(user$|async)?.name?(user$|async)?.name:"Thông tin người dùng"}}</h2>
+        <h2 *ngIf="!(user$|async)?.docID">Tạo hồ sơ người dùng mới</h2>
+    </div>
+    <div class="form-group row">
+        <label class="col-4 col-form-label ">Ảnh đại diện</label> 
+        <div class="col-4">
+            <div class="cover">
+                <img width="150px" height="150px" class="avatar img-circle img-thumbnail" *ngIf="(user$|async)?.docID && !imgSRC" src="{{(user$|async)?.profile}}" alt="avatar">
+                <img width="150px" height="150px" class="avatar img-circle img-thumbnail" *ngIf="imgSRC" src="{{imgSRC}}" alt="avatar">
+            </div>
+        </div>
+        <div class="col-4">
+            <input type="file" #imageSelector id="imageSelector"  name="imageSelector" (change)="selectFile($event)" class="text-center center-block file-upload">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="email" class="col-4 col-form-label">Địa chỉ email</label> 
+        <div class="col-8">
+            <input [ngModel]="(user$|async)?.email"  (ngModelChange)="newUser.email=$event?.trim()" id="email" name="email" placeholder="Email" class="form-control here" required="required" type="text">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="name" class="col-4 col-form-label">Tên hiển thị</label> 
+        <div class="col-8">
+            <input [ngModel]="(user$|async)?.name" id="name" (ngModelChange)="newUser.name=$event?.trim()" name="displayName" placeholder="Tên hiển thị" class="form-control here" type="text">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-4 col-form-label">Số điện thoại</label> 
+        <div class="col-8">
+            <app-phone-numbers [appModel]="(user$|async)?.mobile"  (appModelChange)="newUser.mobile=$event; formPristine=false"  class="form-control here"></app-phone-numbers>
+        </div>
+    </div>
+    <div class="form-group row">
+        <label class="col-4 col-form-label">Giới tính</label> 
+        <app-gender-selector [appModel]="(user$|async)?.gender" (appModelChange)="newUser.gender=$event; formPristine=false " class="col-8"></app-gender-selector>
+    </div>
+    <div class="form-group row">
+        <label for="homeAddress" class="col-4 col-form-label">Địa chỉ nhà</label> 
+        <div class="col-8">
+            <input [ngModel]="(user$|async)?.homeaddress" id="homeAddress" (ngModelChange)="newUser.homeaddress=$event?.trim()" name="homeAddress" placeholder="Địa chỉ nhà" class="form-control here" type="text">
+        </div>
+    </div>
+    <div class="form-group row">
+        <label for="birthday" class="col-4 col-form-label">Ngày sinh</label> 
+        
+        <div class="col-8">
+            <app-date-picker [appModel]="(user$|async)?.birthday" (appModelChange)="newUser.birthday=$event; formPristine=false"></app-date-picker>
+        </div>
+    </div>
+    <div class="form-group row">
+    <div class="offset-4 col-8">
+        <input type="hidden" name="docID" [ngModel]="(user$|async)?.docID">
+        <button name="submit" type="submit" class="btn btn-primary" [disabled]="profileForm.pristine && formPristine">{{(user$|async)?.docID?"Cập nhật":"Thêm mới"}}</button>
+        <!-- <button name="reset" type="reset" class="btn btn-light">Hủy</button> -->
+    </div>
+    </div>
+</form> 

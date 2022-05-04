@@ -1,0 +1,21 @@
+<table class="table table-bordered table-striped container">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Tên tài khoản</th>
+      <th scope="col">Email</th>
+      <th scope="col"><button class="btn btn-success" (click)="createNewUser()">Tạo mới</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let user of (users | async); let i = index" class="data-row">
+      <th scope="row" (click)="select(user)">{{i+1}}</th>
+      <td (click)="select(user)">{{user.name}}</td>
+      <td (click)="select(user)">{{user.email}}</td>
+      <td>
+        <button class="btn btn-outline-danger" (click)="delete(user)">Xóa</button>
+        <button (click)="test(user.docID)">TEST</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

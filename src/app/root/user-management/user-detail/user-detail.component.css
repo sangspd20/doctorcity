@@ -1,0 +1,6 @@
+.cover{
+    height: 150px;
+    width: 150px;
+    background-image: url(http://ssl.gstatic.com/accounts/ui/avatar_2x.png);
+    background-size: contain;
+}

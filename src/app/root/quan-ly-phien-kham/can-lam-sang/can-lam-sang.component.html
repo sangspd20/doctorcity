@@ -1,0 +1,15 @@
+<!--
+<td>{{ dvCanLamSang?.maChiSo }}</td>
+<td>{{ dvCanLamSang?.nhom }}</td>
+-->
+<td>
+    {{ dvCanLamSang?.tenThongDung }}
+</td>
+<td>{{ dvCanLamSang?.giaTri }}</td>
+<!--
+<td>{{ dvCanLamSang?.unit }}</td>
+<td>{{ dvCanLamSang?.ngayTao | date: "dd/MM/yy hh:mm a" }}</td> 
+-->
+<td><small>{{ dvCanLamSang.nguoiNhap?.tenHienThi }}</small></td>
+<td><small>{{ dvCanLamSang?.thoiGian | date: "dd/MM/yy hh:mm a" }}</small></td>
+<td><button *ngIf="!locked" class="btn btn-outline-danger" (click)="xoa(index)">x</button></td>

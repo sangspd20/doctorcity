@@ -1,0 +1,53 @@
+.center {
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+    padding-left: 150%;
+    flex-direction: column;
+}
+
+
+/* spinner */
+
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 1s linear infinite;
+    /* Safari */
+    animation: spin 1s linear infinite;
+}
+
+.activeFile {
+    color: #000;
+    text-decoration: underline;
+    text-decoration-color: #000;
+}
+
+.inActiveFile {
+    color: #007bff;
+    text-decoration: none;
+}
+
+
+/* Safari */
+
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(360deg);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}

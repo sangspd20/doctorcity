@@ -1,0 +1,7 @@
+<div class="input-group">
+    <input class="form-control" placeholder="dd/mm/yyyy"
+           name="d2" #c2="ngModel" [ngModel]="timestamp" ngbDatepicker #d2="ngbDatepicker" (ngModelChange)="submit($event)">
+    <div class="input-group-append">
+      <button class="btn btn-outline-secondary calendar" (click)="d2.toggle()" type="button"><fa-icon [icon]="icon.calendar"></fa-icon></button>
+    </div>
+  </div>

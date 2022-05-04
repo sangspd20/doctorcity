@@ -1,0 +1,10 @@
+<td width="600"><b>{{(tt_trieu_chung_OBS4|async)?.tenThuoc}}</b>
+    <div width="600">{{trieu_chung4.info.huongDanSuDung}}</div>
+</td>
+<td width="180">{{trieu_chung4.info.soLuong}} {{(tt_trieu_chung_OBS4|async)?.dangDongGoi}} </td>
+<td width="100">{{trieu_chung4.info.nhaCungCap}}</td>
+<td>
+    <button *ngIf="!locked" class="btn btn-outline-danger"
+    (click)="xoadt(index1)"
+    style="cursor: pointer;">x</button>
+</td>

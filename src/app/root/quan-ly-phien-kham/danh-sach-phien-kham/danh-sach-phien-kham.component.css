@@ -1,0 +1,110 @@
+:host ::ng-deep p-multiselect .p-multiselect {
+    width: 100%;
+}
+
+.customize-ds {
+    margin-bottom: 25px;
+}
+
+.ds-container {
+    border: 1px solid #DFDFDF;
+    padding: 5px 20px;
+    cursor: pointer;
+}
+
+.ds-avatar {
+    width: 50px;
+    border-radius: 50%;
+}
+
+.active{
+  background-color: #007bff;
+  color: #fff;
+}
+
+.search{
+    width: 100px;
+}
+
+.container-search{
+    width: 100%;
+}
+
+.container-ds-phien-kham{
+    height: 50vh;
+    overflow: auto;
+    margin-top: 10px;
+}
+.dot-status{
+    display: inline-block;
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.option-filter{
+    display: flex;
+}
+
+.dot-status-filter{
+    display: inline-block;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    margin-left: 5px;
+    margin-right: 5px;
+    cursor: pointer;
+}
+
+.p-field-checkbox{
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.red{
+    background: red;
+}
+.yellow{
+    background: orange;
+}
+.green{
+    background: green;
+}
+.gray{
+    background: gray;
+}
+.container-status{
+    display: inline-block;
+    margin-left: 10px;
+}
+
+
+.center{
+    display: flex;
+    justify-content: center;
+    padding-top: 30px;
+}
+
+/* spinner */
+.loader {
+    border: 5px solid #f3f3f3;
+    border-radius: 50%;
+    border-top: 5px solid #3498db;
+    width: 120px;
+    height: 120px;
+    -webkit-animation: spin 1s linear infinite; /* Safari */
+    animation: spin 1s linear infinite;
+  }
+  
+  /* Safari */
+  @-webkit-keyframes spin {
+    0% { -webkit-transform: rotate(0deg); }
+    100% { -webkit-transform: rotate(360deg); }
+  }
+  
+  @keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+  }

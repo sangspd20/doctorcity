@@ -1,0 +1,39 @@
+
+<div class="card bg-light">
+    <article class="card-body mx-auto" style="max-width: 400px;">
+        <h4 class="card-title mt-3 text-center">Đăng ký tài khoản</h4>
+        <p class="text-center">Liên kết mạng xã hội</p>
+        <p>
+            <button (click)="authSv.signInWithGoogle()" class="btn btn-block btn-danger"> <fa-icon [icon]="icon.google"></fa-icon>   Đăng ký với Google</button>
+            <button (click)="authSv.signInWithFacebook()" class="btn btn-block btn-primary"> <fa-icon [icon]="icon.facebook"></fa-icon>   Đăng ký với Facebook</button>
+        </p>
+        <p class="divider-text">
+            <span class="bg-light">Hoặc đăng ký</span>
+        </p>
+        <form>
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <fa-icon [icon]="icon.envelope"></fa-icon> </span>
+             </div>
+            <input name="email" class="form-control" [(ngModel)]="email" placeholder="Địa chỉ email" type="email">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <fa-icon [icon]="icon.lock"></fa-icon> </span>
+            </div>
+            <input name="password" class="form-control" [(ngModel)]="password" placeholder="Mật khẩu" type="password">
+        </div> <!-- form-group// -->
+        <div class="form-group input-group">
+            <div class="input-group-prepend">
+                <span class="input-group-text"> <fa-icon [icon]="icon.lock"></fa-icon> </span>
+            </div>
+            <input name="rePassword" class="form-control" [(ngModel)]="rePassword" placeholder="Nhập lại mật khẩu" type="password">
+        </div> <!-- form-group// -->                                      
+        <div class="form-group">
+            <button type="buttoon" class="btn btn-success btn-block" (click)="register()">Đăng ký</button>
+        </div> <!-- form-group// -->      
+        <p class="text-center">Bạn đã có tài khoản? <a [routerLink]="['/dang-nhap']">Đăng nhập</a> </p>                                                                 
+    </form>
+    </article>
+    </div> <!-- card.// -->
+    

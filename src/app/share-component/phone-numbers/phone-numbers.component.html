@@ -1,0 +1,8 @@
+<ul class="list-inline d-inline-block">
+    <li *ngFor="let phoneNo of phoneNos; index as i"  class="list-inline-item">
+        <span >{{phoneNo}}</span>
+        <fa-icon [icon]="icon.close"(click)="delete(i)"></fa-icon> 
+    </li>
+</ul>
+
+<input #newPhoneNoInput ="ngModel" [(ngModel)]="newPhoneNo"  placeholder="..." (blur)="submit()" (keyup.enter)="submit()" required>

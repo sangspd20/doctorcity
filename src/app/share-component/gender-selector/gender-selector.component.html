@@ -1,0 +1,25 @@
+<div ngbDropdown>
+    <button type="button" class="btn btn-outline-secondary" id="dropdownBasic1" ngbDropdownToggle>
+        <span *ngIf="!gender">Chọn giới tính</span>
+        <span *ngIf="gender == 'men' ">Nam</span>
+        <span *ngIf="gender == 'women' ">Nữ</span>
+        <span *ngIf="gender == 'les' ">Les - Đồng tính luyến ái nữ</span>
+        <span *ngIf="gender == 'gay' ">Gay - Đồng tính luyến ái nam</span>
+        <span *ngIf="gender == 'bisexual' ">Bisexual - Song tính luyến ái</span>
+        <span *ngIf="gender == 'transgender' ">Transgender - Chuyển giới</span>
+        <span *ngIf="gender == 'queer' ">Queer - Khác biệt, không nhận định</span>
+        <span *ngIf="gender == 'questioning' ">Questioning - Đang tìm hiểu</span>
+        <span *ngIf="gender == 'other' ">Giới tính khác</span>
+    </button>
+    <div ngbDropdownMenu aria-labelledby="dropdownBasic1">
+      <button type="button" ngbDropdownItem (click)="submit('men')">Nam</button>
+      <button type="button" ngbDropdownItem (click)="submit('women')">Nữ</button>
+      <button type="button" ngbDropdownItem (click)="submit('les')">Les - Đồng tính luyến ái nữ</button>
+      <button type="button" ngbDropdownItem (click)="submit('gay')">Gay - Đồng tính luyến ái nam</button>
+      <button type="button" ngbDropdownItem (click)="submit('bisexual')">Bisexual - Song tính luyến ái</button>
+      <button type="button" ngbDropdownItem (click)="submit('transgender')">Transgender - Chuyển giới</button>
+      <button type="button" ngbDropdownItem (click)="submit('queer')">Queer - Khác biệt, không nhận định</button>
+      <button type="button" ngbDropdownItem (click)="submit('questioning')">Questioning - Đang tìm hiểu</button>
+      <button type="button" ngbDropdownItem (click)="submit('other')">Giới tính khác</button>
+    </div>
+</div>

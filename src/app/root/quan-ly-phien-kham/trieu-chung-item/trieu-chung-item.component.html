@@ -1,0 +1,7 @@
+<!-- <th scope="row">{{index+1}}</th> -->
+<td>{{(tt_trieu_chung_OBS|async)?.tenTrieuChung}}</td>
+<td>{{trieu_chung.info.mucDo}}</td>
+<td>{{trieu_chung.info.moTa}}</td>
+<td><small>{{trieu_chung.info.nguoiDanhGia}}</small></td>
+<td><small>{{trieu_chung.info.thoiDiem | date: "dd/MM/yy hh:mm a"}}</small></td>
+<td><button *ngIf="!locked" class="btn btn-outline-danger" (click)="xoa(index)">x</button></td>

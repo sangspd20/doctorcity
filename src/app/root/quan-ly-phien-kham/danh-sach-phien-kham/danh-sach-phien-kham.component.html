@@ -1,0 +1,57 @@
+<div class="container-search">
+    <div class="option-filter">
+        <div class="p-field-checkbox">
+            <p-checkbox name="group1" value="yeuCauHoTro" [(ngModel)]="optionsFilter" inputId="ny"></p-checkbox>
+            <span class='dot-status-filter red' pTooltip="Yêu cầu hỗ trợ" tooltipPosition="bottom"></span>
+        </div>
+        <div class="p-field-checkbox">
+            <p-checkbox name="group1" value="trangThaiXuLy" [(ngModel)]="optionsFilter" inputId="la"></p-checkbox>
+            <span class='dot-status-filter green' pTooltip="Hoàn thành" tooltipPosition="bottom"></span>
+        </div>
+        <div class="p-field-checkbox">
+            <p-checkbox name="group1" value="thanhToan" [(ngModel)]="optionsFilter" inputId="sf"></p-checkbox>
+            <span class='dot-status-filter yellow' pTooltip="Đã thanh toán" tooltipPosition="bottom"></span>
+        </div>
+        <div class="p-field-checkbox">
+            <p-checkbox name="group1" value="ketThuc" [(ngModel)]="optionsFilter" inputId="ch"></p-checkbox>
+            <span class='dot-status-filter gray' pTooltip="Kết thúc" tooltipPosition="bottom"></span>
+        </div>
+    </div>
+    <div class="p-inputgroup mb-1">
+        <input pInputText id="typeahead-tim-hop-dong" type="text" placeholder="Tên hợp đồng" [(ngModel)]="query_tim_hop_dong" [ngbTypeahead]="searchHopDong" [inputFormatter]="formatter" [resultFormatter]="formatter" [editable]="false" (selectItem)="selected_hop_dong($event.item.id)"
+            [disabled]="!!keywordHopDongFilter" />
+        <button type="button" pButton pRipple class="p-button-secondary" icon="pi pi-refresh" (click)="handleResetSearch()" [disabled]="!keywordHopDongFilter"></button>
+    </div>
+    <div class="p-inputgroup mb-1">
+        <input type="text" [(ngModel)]="keywordFilter" pInputText placeholder="Tên/mã phiên khám">
+        <button type="button" pButton pRipple class="p-button-secondary" icon="pi pi-refresh" (click)="handleResetSearch()"></button>
+    </div>
+    <div class="p-inputgroup" style="display: flex;flex: 1; justify-content: flex-end;">
+        <button type="button" pButton pRipple class="p-button-primary" icon="pi pi-search" (click)="handleSearch()" style="width: 10rem;"></button>
+    </div>
+</div>
+
+<div class="container-ds-phien-kham">
+    <div class="center" *ngIf="loading">
+        <div class="loader"></div>
+    </div>
+    <table class="table table-bordered container table-sm" mat-table>
+        <tbody>
+            <tr *ngFor="let phien_kham of ds_phien_kham_2; let i = index" class="data-row {{ phienKhamId === phien_kham.id ? 'active' : '' }}">
+                <td style="cursor: pointer;" (click)="emitPhienKham(phien_kham)">
+                    <span>
+                        <b>{{phien_kham?.jsonKhachHang?.displayName}}</b>
+                    </span>
+                    <br>
+                    <span>{{phien_kham?.maPhienKham}}</span>
+                    <span class="container-status">
+                        <span *ngIf="phien_kham?._filterYeuCauHoTro" class='dot-status red'></span>
+                    <span *ngIf="phien_kham?._filterTrangThaiXuLy" class='dot-status green'></span>
+                    <span *ngIf="phien_kham?._filterThanhToan" class='dot-status yellow'></span>
+                    <span *ngIf="phien_kham?.ketThuc === '1'" class='dot-status gray'></span>
+                    </span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
